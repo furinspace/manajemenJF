@@ -1,0 +1,36 @@
+# Ignore everything in the root directory
+*
+
+# But DO NOT ignore these files/folders
+!/src
+!/public
+!/components.json
+!/next.config.ts
+!/package.json
+!/package-lock.json
+!/README.md
+!/tailwind.config.ts
+!/tsconfig.json
+!/.vscode/
+!/.vscode/settings.json
+!/.env
+!.gitignore
+
+# Standard Next.js ignores (some might be redundant now, but safe to keep)
+/node_modules
+/.next/
+/out/
+/.vercel/
+
+# Env files
+.env*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
