@@ -10,7 +10,7 @@ export interface NavLink {
   roles: Role[];
 }
 
-export type OrderStatus = 'Tertunda' | 'Dalam Produksi' | 'Siap Dikirim' | 'Terkirim' | 'Dibatalkan';
+export type OrderStatus = 'Antrian' | 'Tertunda' | 'Dalam Produksi' | 'Siap Dikirim' | 'Terkirim' | 'Dibatalkan';
 
 export interface Order {
   id: string;

@@ -17,6 +17,8 @@ import { VariantProps } from "class-variance-authority";
 import { badgeVariants } from "@/components/ui/badge";
 import { supabase } from "@/lib/supabase-client";
 
+export const dynamic = 'force-dynamic';
+
 export default async function OrdersPage() {
 
     const { data: orders, error } = await supabase
@@ -38,6 +40,7 @@ export default async function OrdersPage() {
           case 'Terkirim': return 'outline';
           case 'Tertunda': return 'destructive';
           case 'Dibatalkan': return 'destructive';
+          case 'Antrian': return 'default';
           default: return 'default';
         }
       };
@@ -52,7 +55,17 @@ export default async function OrdersPage() {
       }
 
     if (error) {
-        return <p>Gagal memuat pesanan. Error: {error.message}</p>;
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Error</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-destructive">Gagal memuat pesanan. Silakan coba lagi nanti.</p>
+                    <p className="text-xs text-muted-foreground mt-2">Detail: {error.message}</p>
+                </CardContent>
+            </Card>
+        );
     }
 
   return (
@@ -114,7 +127,8 @@ export default async function OrdersPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders && orders.map((order) => (
+            {orders && orders.length > 0 ? (
+              orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell className="font-medium">{order.id}</TableCell>
                 <TableCell>
@@ -131,7 +145,14 @@ export default async function OrdersPage() {
                   {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total)}
                 </TableCell>
               </TableRow>
-            ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  Belum ada pesanan.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>
