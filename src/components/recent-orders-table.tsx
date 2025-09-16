@@ -46,15 +46,6 @@ export async function RecentOrdersTable() {
     return <p>Gagal memuat pesanan terbaru. Error: {error.message}</p>;
   }
 
-  if (!orders || orders.length === 0) {
-    return (
-        <Card>
-            <CardHeader><CardTitle>Pesanan Terbaru</CardTitle></CardHeader>
-            <CardContent><p>Belum ada pesanan.</p></CardContent>
-        </Card>
-    );
-  }
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center">
@@ -76,25 +67,33 @@ export async function RecentOrdersTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>
-                  <div className="font-medium">{order.customer_name}</div>
-                </TableCell>
-                <TableCell>
-                  {order.order_items?.[0]?.product_name || 'N/A'}
-                  {order.order_items?.length > 1 && 
-                    <span className='text-xs text-muted-foreground'> +{order.order_items.length - 1} lainnya</span>
-                  }
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <Badge variant={getStatusVariant(order.status as OrderStatus)}>{order.status}</Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total)}
-                </TableCell>
-              </TableRow>
-            ))}
+            {(!orders || orders.length === 0) ? (
+                <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                    Belum ada pesanan terbaru.
+                    </TableCell>
+                </TableRow>
+            ) : (
+                orders.map((order) => (
+                <TableRow key={order.id}>
+                    <TableCell>
+                    <div className="font-medium">{order.customer_name}</div>
+                    </TableCell>
+                    <TableCell>
+                    {order.order_items?.[0]?.product_name || 'N/A'}
+                    {order.order_items && order.order_items.length > 1 && 
+                        <span className='text-xs text-muted-foreground'> +{order.order_items.length - 1} lainnya</span>
+                    }
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                    <Badge variant={getStatusVariant(order.status as OrderStatus)}>{order.status}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total)}
+                    </TableCell>
+                </TableRow>
+                ))
+            )}
           </TableBody>
         </Table>
       </CardContent>
